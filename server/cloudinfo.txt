@@ -1,0 +1,3 @@
+pass - app9876
+
+mongodb+srv://mernlearn:<password>@cluster0.2u0lc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
