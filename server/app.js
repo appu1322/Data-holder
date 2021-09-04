@@ -6,15 +6,16 @@ const app = express();
 // linked dotenv.config.env file with node app 
 dotenv.config({path:'./config.env'});
 require('./db/conn');
+const User = require('./model/userSchema');
 
 // get port number from dotenv.config.env file 
 const port = process.env.PORT;
+
 
 const middleware = (req, res, next) =>{
     console.log("middleware works fine");
     next();
 }
-
 
 app.get("/", (req, res) =>{
     res.send("hiii");
