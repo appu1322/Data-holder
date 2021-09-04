@@ -5,17 +5,10 @@ const app = express();
 
 // linked dotenv.config.env file with node app 
 dotenv.config({path:'./config.env'});
+require('./db/conn');
 
-// get url path database from dotenv.config.env file 
+// get port number from dotenv.config.env file 
 const port = process.env.PORT;
-const dbUrl = process.env.DATABASE;
-
-mongoose.connect(dbUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() =>{
-    console.log("Connection successful...");
-}).catch((e) => console.log("connection error! " + e));
 
 const middleware = (req, res, next) =>{
     console.log("middleware works fine");
