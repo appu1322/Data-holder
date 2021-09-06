@@ -11,6 +11,10 @@ const User = require('./model/userSchema');
 // get port number from dotenv.config.env file 
 const port = process.env.PORT;
 
+app.use(express.json());
+app.use(require('./router/auth'));
+
+
 
 const middleware = (req, res, next) =>{
     console.log("middleware works fine");
