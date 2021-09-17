@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require('../model/userSchema');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.get("/", (req, res) =>{
     res.send("Hi there, i am rourter");
@@ -55,13 +57,22 @@ router.post("/signin", async(req, res) =>{
 
         const userExist = await User.findOne({email});
         
-        if(!userExist)
+        if(!userExist){
             res.status(400).json({error:"Invalid credentials!"});
-        else{
-            res.json({message: "Login successful..."});
+        }else{
+            const isMatch = await bcrypt.compare(password, userExist.password);
+            if(!isMatch){
+                res.status(400).json({error:"Invalid credentials!"});
+            }else{
+                const token = await userExist.generateAuthToken();
+                const result = await User.findByIdAndUpdate({_id:userExist._id}, {$set:{tokens:{token:token}}});
+                await result.save();
+                res.json({message: "Login successful..."});
+            }
         }
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({error:"Internal server error!"});
     }
 })
