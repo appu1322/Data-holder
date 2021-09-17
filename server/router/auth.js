@@ -67,6 +67,10 @@ router.post("/signin", async(req, res) =>{
                 const token = await userExist.generateAuthToken();
                 const result = await User.findByIdAndUpdate({_id:userExist._id}, {$set:{tokens:{token:token}}});
                 await result.save();
+                res.cookie('jwtoken', token, {
+                    expires:new Date(Date.now() + 25892000000),
+                    httpOnly:true
+                });
                 res.json({message: "Login successful..."});
             }
         }
