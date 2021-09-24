@@ -5,6 +5,7 @@ import About from './components/About'
 import Contact from './components/Contact'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import ErroePage from './components/ErrorPage'
 import {Switch, Route,} from "react-router-dom";
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
       </Route>
       <Route exact path='/signup'>
         <Signup/>
+      </Route>
+      <Route>
+        <ErroePage/>
       </Route>
     </Switch>
     </>
