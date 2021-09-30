@@ -12,38 +12,26 @@ router.post("/register", async(req, res) =>{
     const {name, email, phone, work, password, cpassword} = req.body;
 
     if(!name || !email || !phone || !work || !password || !cpassword){
-        res.status(422).send("Fill data properly!");
+        res.status(422).json({status: 422, error:"Fill data properly!"});
     }
-
-    // User.findOne({email}).then((userExit) =>{
-    //     if(userExit)
-    //         return res.status(422).json({error:"Email already exist!"});
-    //     else{
-    //         const user = new User({name, email, phone, work, password, cpassword});
-
-    //         user.save().then(() =>{
-    //             return res.status(201).json({message:"You have registered successfully.."});
-    //         }).catch((e) => res.status(500).json({error:"Registeration failed!"}));
-    //     }
-            
-    // }).catch((e) => res.status(500).json({error:"failed to registered!"}));
 
     try {
 
         const userExist = await User.findOne({email});
+        console.log(userExist);
 
         if(userExist){
-            return res.status(422).json({error:"Email already exist!"});
+            return res.status(422).json({status: 422, error:"Email already exist!"});
         }
 
         const userResponse = new User({name, email, phone, work, password, cpassword});
 
         await userResponse.save();
 
-        return res.status(201).json({message:"You have registered successfully.."});
+        return res.status(201).json({status: 201, message:"You have registered successfully.."});
 
     } catch (error) {
-        res.status(500).json({error:"failed to registered!"});
+        res.status(500).json({status: 500, error:"failed to registered!"});
     }
 
 })

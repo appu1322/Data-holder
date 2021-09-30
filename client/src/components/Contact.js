@@ -6,7 +6,7 @@ export default class Contact extends Component {
             <>
             <section className="contact-section">
                 <div className="container-fluid my-4">
-                    <div className="row ">
+                    <div className="row p-2">
 
                         <div className="col-md-3 mx-1 my-2 pt-2">
                             <div id="phone">
@@ -53,7 +53,7 @@ export default class Contact extends Component {
                     </div>
                 </div>
 
-                <div className="container">
+                <div className="container my-3">
                     <div className="contact-form p-3">
                         <h2>Get in Touch</h2>
                         <form>

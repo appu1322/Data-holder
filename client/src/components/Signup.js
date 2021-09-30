@@ -3,9 +3,11 @@ import { NavLink } from "react-router-dom";
 import signupImg from '../images/form.png'
 
 export default class Signup extends Component {
+
     constructor(){
         super();
-        this.state = {name:"", email:"", phone:"", profession:"", password:"", cpassword:""};
+        this.state = {name:"", email:"", phone:91 , work:"", password:"", cpassword:""};
+        this.postData = this.postData.bind(this);
     }
 
     
@@ -16,6 +18,36 @@ export default class Signup extends Component {
         this.setState({[name]: value});
     }
 
+    async postData(e){
+        e.preventDefault();
+        const {name, email, phone, work, password, cpassword} = this.state;
+            try {
+                const res = await fetch('/register', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name, email, phone, work, password, cpassword
+                    })
+                })
+                const data = await res.json();
+
+                if(data.status === 422 && data.error === "Fill data properly!" ){
+                    window.alert('Fill data properly!');
+                }else if(data.status === 422 && data.error === "Email already exist!"){
+                    window.alert('Email already exist!');
+                }else if(data.status === 201){
+                    window.alert('succesully registered');
+                }else{
+                    window.alert('failed to registered');
+                }
+                
+            } catch (error) {
+                console.log('failed to registered')
+            }
+    }
+
     render() {
         return (
             <div className="container py-5">
@@ -24,7 +56,7 @@ export default class Signup extends Component {
                     <div className="row mx-2">
 
                         <div className="col-md-6 signup-form mt-5 mb-2">
-                        <form>
+                        <form method="POST">
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
@@ -56,7 +88,7 @@ export default class Signup extends Component {
                                     <path d="M.5 0a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 .5 0zM2 1.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1z"/>
                                 </svg> Profession
                                 </label>
-                                <input type="text" className="form-control" id="profession" name="profession" value={this.state.profession} aria-describedby="emailHelp" autoComplete="off" onChange={this.handleInput.bind(this)}/>
+                                <input type="text" className="form-control" id="profession" name="work" value={this.state.work} aria-describedby="emailHelp" autoComplete="off" onChange={this.handleInput.bind(this)}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="password" className="form-label">
@@ -75,9 +107,9 @@ export default class Signup extends Component {
                                 <input type="password" className="form-control" id="confirm-password" name="cpassword" value={this.state.cpassword} autoComplete="off" onChange={this.handleInput.bind(this)}/>
                             </div>
                             <div className="text-center">
-                            <button className="btn btn-success">Rgister</button>
+                                <input type="submit" className="form-submit btn btn-success" value="register" onClick={this.postData} />
                             </div>
-                            </form>
+                        </form>
                         </div>
 
                         <div className="col-md-6 mt-5">
